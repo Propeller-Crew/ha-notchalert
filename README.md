@@ -7,6 +7,10 @@
 колонкою, ролет. Тривога приходить за секунду. Дані ті самі, що в застосунку
 [«Тривога в нотчі»](https://notchalert.propellercrew.com) на iPhone, Android і Mac.
 
+<p align="center">
+  <a href="#card"><img src="https://raw.githubusercontent.com/Propeller-Crew/ha-notchalert/main/images/card-wall-dark.png" width="760" alt="Картка «Тривога в нотчі» на панелі Home Assistant: червоний рівень 48 хв, балістика, дрон поруч за 4 км, світло є до 21:00"></a>
+</p>
+
 *[English below](#english)*
 
 ## Як підключити
@@ -30,23 +34,23 @@
 світла на добу з відліком до перемикання. На телефоні все стовпчиком, на планшеті на стіні тривога й світло
 поруч. Темна й світла тема Home Assistant підхоплюються самі.
 
-<p>
-  <img src="https://raw.githubusercontent.com/Propeller-Crew/ha-notchalert/main/images/card-phone-dark.png" width="300" alt="Картка на телефоні, темна тема: червоний рівень, балістика, дрон поруч, світло до 21:00">
-  <img src="https://raw.githubusercontent.com/Propeller-Crew/ha-notchalert/main/images/card-phone-light.png" width="300" alt="Картка на телефоні, світла тема: тихо, світло до 21:00">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Propeller-Crew/ha-notchalert/main/images/card-phone-dark.png" width="340" alt="Картка на телефоні, темна тема: червоний рівень, балістика, дрон поруч, світло до 21:00">
+  &nbsp;
+  <img src="https://raw.githubusercontent.com/Propeller-Crew/ha-notchalert/main/images/card-phone-light.png" width="340" alt="Та сама картка у світлій темі">
 </p>
-<img src="https://raw.githubusercontent.com/Propeller-Crew/ha-notchalert/main/images/card-wall-dark.png" width="620" alt="Широка картка для планшета на стіні: тривога зліва, світло справа">
 
 Ставити окремо нічого не треба: картка приходить разом з інтеграцією.
 
 1. Панель → олівець **Редагувати** → **Додати картку** → вкладка **За карткою**.
 2. Пошук: «нотч» → **Тривога в нотчі (NotchAlert)**.
-3. **Місце** вже вибране (з кількома місцями — виберіть потрібне), **Вигляд** — «Сам за шириною», або
-   «Компактний» чи «Широкий». Перемикачі **Світло** й **Цілі над областю** ховають ці рядки. **Зберегти**.
+3. **Місце** вже вибране (з кількома місцями виберіть потрібне). **Вигляд**: «Сам за шириною», «Компактний»
+   чи «Широкий». Перемикачі **Світло** й **Цілі над областю** ховають ці рядки. **Зберегти**.
 
-<img src="https://raw.githubusercontent.com/Propeller-Crew/ha-notchalert/main/images/card-editor.png" width="620" alt="Редактор картки: місце, вигляд, світло, цілі над областю">
+<p align="center"><img src="https://raw.githubusercontent.com/Propeller-Crew/ha-notchalert/main/images/card-editor.png" width="720" alt="Редактор картки: місце, вигляд, світло, цілі над областю"></p>
 
-Натиск на тривогу відкриває історію сутності тривоги, на світло — графік. Смуга світла показує 24 години від
-поточної; штрих — години, на які графіка ще нема (не «світло є»). Світло видно, коли в застосунку вибрана черга.
+Натиск на тривогу відкриває історію сутності тривоги, натиск на світло відкриває графік. Смуга світла показує
+24 години від поточної. Штрих означає години, на які графіка ще нема (а не «світло є»). Світло видно, коли в застосунку вибрана черга.
 
 Картка з'явилась у v0.2.0. Якщо після оновлення й перезапуску Home Assistant її немає в списку, оновіть сторінку
 браузера або перезапустіть застосунок Home Assistant на телефоні.
@@ -60,7 +64,7 @@
 |---|---|
 | `binary_sensor.irpin_air_raid_alert` | Повітряна тривога в районі (атрибути `level`, `threats`, `since`, `reason`) |
 | `sensor.irpin_alert_level` | `none` / `yellow` / `red` |
-| `sensor.irpin_threat` | Найважча загроза: `none`, `massive`, `ballistic`, `cruise`, `mig`, `kab`, `aircraft`, `drone`; усі загрози — в атрибуті `list` і окремими атрибутами так/ні |
+| `sensor.irpin_threat` | Найважча загроза: `none`, `massive`, `ballistic`, `cruise`, `mig`, `kab`, `aircraft`, `drone`; усі загрози в атрибуті `list` і окремими атрибутами так/ні |
 | `sensor.irpin_alert_started`, `sensor.irpin_last_all_clear` | Коли почалась тривога і коли був останній відбій |
 | `binary_sensor.irpin_drone_nearby`, `sensor.irpin_drone_distance` | Дрон у радіусі від дому й відстань, км (коли застосунок знає місце точно) |
 | `sensor.irpin_power`, `binary_sensor.irpin_power_schedule` | Світло за графіком: `on` / `off` / `maybe` / `unknown`; атрибути `group`, `intervals` (відключення й «можливо» наперед), `known_until` (до коли графік відомий) |
@@ -119,7 +123,7 @@ automation:
 Дрон поруч: закрити ролети.
 
 ```yaml
-  - alias: "Дрон поруч — ролети"
+  - alias: "Дрон поруч: ролети"
     triggers:
       - trigger: event
         event_type: notchalert_drone_near
@@ -146,7 +150,7 @@ automation:
 ## Як швидко
 
 Інтеграція тримає відкритий запит до сервера, і той відповідає, щойно стан змінився: тривога приходить за
-секунду. Запасне опитування — раз на 30 с. Якщо сервер просить почекати, інтеграція чекає рівно стільки,
+секунду. Запасне опитування раз на 30 с. Якщо сервер просить почекати, інтеграція чекає рівно стільки,
 скільки він сказав.
 
 ---
@@ -177,7 +181,12 @@ lasts, threats as silhouettes, "Drone nearby · place · km", targets over the o
 with a countdown to the next switch. Stacked on a phone, side by side on a wall tablet; follows the dark and
 light theme of Home Assistant.
 
-<img src="https://raw.githubusercontent.com/Propeller-Crew/ha-notchalert/main/images/card-wall-light.png" width="620" alt="Wide card, light theme: red level, ballistic, drone nearby, power until 21:00">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Propeller-Crew/ha-notchalert/main/images/card-wall-light.png" width="760" alt="Wide card, light theme: red level, ballistic, drone nearby, power until 21:00">
+</p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Propeller-Crew/ha-notchalert/main/images/card-phone-quiet-en.png" width="340" alt="Compact card, light theme: quiet, power on until 21:00">
+</p>
 
 The card ships with the integration, nothing else to install: Dashboard → **Edit** → **Add card** → **By card**
 → search "notch" → **Тривога в нотчі (NotchAlert)**. The place is already picked; layout "By width", "Compact" or
