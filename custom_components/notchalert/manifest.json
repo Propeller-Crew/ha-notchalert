@@ -1,0 +1,14 @@
+{
+  "domain": "notchalert",
+  "name": "Тривога в нотчі (NotchAlert)",
+  "codeowners": [
+    "@sahneo"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/Propeller-Crew/ha-notchalert",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/Propeller-Crew/ha-notchalert/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}

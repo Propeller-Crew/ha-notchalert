@@ -1,0 +1,103 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "NotchAlert key",
+        "description": "In the NotchAlert app (iPhone, Android or Mac): Settings → Home Assistant → Get key. Copy the key and paste it here.",
+        "data": {
+          "api_key": "Key"
+        },
+        "data_description": {
+          "api_key": "Starts with na_. Keep it private: whoever has it sees your place."
+        }
+      },
+      "place": {
+        "title": "Place",
+        "description": "The key has several places. Add the others the same way.",
+        "data": {
+          "place": "Place"
+        }
+      },
+      "reauth_confirm": {
+        "title": "New key",
+        "description": "The key for {place} no longer works (a new one was issued or it was turned off in the app). Paste the current key.",
+        "data": {
+          "api_key": "Key"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "This key doesn't work. Get a new one in the app.",
+      "rate_limited": "Too many attempts. Try again in a few minutes.",
+      "cannot_connect": "Can't reach the NotchAlert server.",
+      "no_places": "The key has no places."
+    },
+    "abort": {
+      "already_configured": "This place is already added.",
+      "reauth_successful": "Key updated."
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "alert": {
+        "name": "Air raid alert"
+      },
+      "drone_near": {
+        "name": "Drone nearby"
+      },
+      "power": {
+        "name": "Power (schedule)"
+      }
+    },
+    "sensor": {
+      "alert_level": {
+        "name": "Alert level",
+        "state": {
+          "none": "No alert",
+          "yellow": "Yellow",
+          "red": "Red"
+        }
+      },
+      "threats": {
+        "name": "Threat",
+        "state": {
+          "none": "None",
+          "massive": "Massive attack",
+          "ballistic": "Ballistic missiles",
+          "cruise": "Cruise missiles",
+          "mig": "MiG-31K",
+          "kab": "Guided bombs",
+          "aircraft": "Aircraft",
+          "drone": "Drones"
+        }
+      },
+      "alert_since": {
+        "name": "Alert started"
+      },
+      "last_clear": {
+        "name": "Last all-clear"
+      },
+      "drone_distance": {
+        "name": "Drone distance"
+      },
+      "power_state": {
+        "name": "Power",
+        "state": {
+          "on": "On",
+          "off": "Off",
+          "maybe": "Possible outage",
+          "unknown": "No schedule yet"
+        }
+      },
+      "power_change": {
+        "name": "Power changes at"
+      },
+      "next_outage": {
+        "name": "Next outage"
+      },
+      "sky_targets": {
+        "name": "Targets over the oblast"
+      }
+    }
+  }
+}
