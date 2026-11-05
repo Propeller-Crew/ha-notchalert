@@ -22,6 +22,35 @@
 Після «Видати новий ключ» чи «Вимкнути» старий ключ одразу перестає діяти, і Home Assistant попросить новий.
 Ключ нікому не показуйте: з ним видно ваше місце.
 
+<a id="card"></a>
+## Картка для панелі
+
+Те саме, що в нотчі на Mac і на острівці iPhone: рівень кольором і формою (червоний трикутник, жовтий круг,
+зелене кільце), скільки триває тривога, загрози силуетами, «Дрон поруч · місце · км», цілі над областю й смуга
+світла на добу з відліком до перемикання. На телефоні все стовпчиком, на планшеті на стіні тривога й світло
+поруч. Темна й світла тема Home Assistant підхоплюються самі.
+
+<p>
+  <img src="https://raw.githubusercontent.com/Propeller-Crew/ha-notchalert/main/images/card-phone-dark.png" width="300" alt="Картка на телефоні, темна тема: червоний рівень, балістика, дрон поруч, світло до 21:00">
+  <img src="https://raw.githubusercontent.com/Propeller-Crew/ha-notchalert/main/images/card-phone-light.png" width="300" alt="Картка на телефоні, світла тема: тихо, світло до 21:00">
+</p>
+<img src="https://raw.githubusercontent.com/Propeller-Crew/ha-notchalert/main/images/card-wall-dark.png" width="620" alt="Широка картка для планшета на стіні: тривога зліва, світло справа">
+
+Ставити окремо нічого не треба: картка приходить разом з інтеграцією.
+
+1. Панель → олівець **Редагувати** → **Додати картку** → вкладка **За карткою**.
+2. Пошук: «нотч» → **Тривога в нотчі (NotchAlert)**.
+3. **Місце** вже вибране (з кількома місцями — виберіть потрібне), **Вигляд** — «Сам за шириною», або
+   «Компактний» чи «Широкий». Перемикачі **Світло** й **Цілі над областю** ховають ці рядки. **Зберегти**.
+
+<img src="https://raw.githubusercontent.com/Propeller-Crew/ha-notchalert/main/images/card-editor.png" width="620" alt="Редактор картки: місце, вигляд, світло, цілі над областю">
+
+Натиск на тривогу відкриває історію сутності тривоги, на світло — графік. Смуга світла показує 24 години від
+поточної; штрих — години, на які графіка ще нема (не «світло є»). Світло видно, коли в застосунку вибрана черга.
+
+Картка з'явилась у v0.2.0. Якщо після оновлення й перезапуску Home Assistant її немає в списку, оновіть сторінку
+браузера або перезапустіть застосунок Home Assistant на телефоні.
+
 ## Сутності
 
 Нижче id для місця «Ірпінь» у Home Assistant з англійською системною мовою. З українською id будуть інші
@@ -34,6 +63,8 @@
 | `sensor.irpin_threat` | Найважча загроза: `none`, `massive`, `ballistic`, `cruise`, `mig`, `kab`, `aircraft`, `drone`; усі загрози — в атрибуті `list` і окремими атрибутами так/ні |
 | `sensor.irpin_alert_started`, `sensor.irpin_last_all_clear` | Коли почалась тривога і коли був останній відбій |
 | `binary_sensor.irpin_drone_nearby`, `sensor.irpin_drone_distance` | Дрон у радіусі від дому й відстань, км (коли застосунок знає місце точно) |
+| `sensor.irpin_power`, `binary_sensor.irpin_power_schedule` | Світло за графіком: `on` / `off` / `maybe` / `unknown`; атрибути `group`, `intervals` (відключення й «можливо» наперед), `known_until` (до коли графік відомий) |
+| `sensor.irpin_power_changes_at`, `sensor.irpin_next_outage` | Коли світло перемкнеться (атрибут `next`) і коли наступне відключення |
 | `sensor.irpin_targets_over_the_oblast` | Скільки цілей над областю (атрибути: до нас, від нас, збито) |
 
 Коли сервер не має свіжих даних, сутності стають `unavailable`, а не «тихо», тож автоматизація на «відбій» від
@@ -138,6 +169,20 @@ The key is tied to the place chosen in the app. Change the place in the app, and
 "Issue new key" or "Turn off" in the app revokes the old key at once, and Home Assistant asks for the new one.
 Keep the key private: it reveals your place.
 
+<a id="card-en"></a>
+### Dashboard card
+
+The same as the notch on a Mac and the island on an iPhone: the level by colour and shape, how long the alert
+lasts, threats as silhouettes, "Drone nearby · place · km", targets over the oblast and a 24-hour power strip
+with a countdown to the next switch. Stacked on a phone, side by side on a wall tablet; follows the dark and
+light theme of Home Assistant.
+
+<img src="https://raw.githubusercontent.com/Propeller-Crew/ha-notchalert/main/images/card-wall-light.png" width="620" alt="Wide card, light theme: red level, ballistic, drone nearby, power until 21:00">
+
+The card ships with the integration, nothing else to install: Dashboard → **Edit** → **Add card** → **By card**
+→ search "notch" → **Тривога в нотчі (NotchAlert)**. The place is already picked; layout "By width", "Compact" or
+"Wide"; toggles hide the power and the targets. Hatched hours on the strip have no schedule yet.
+
 ### Entities
 
 | Entity | What |
@@ -147,6 +192,7 @@ Keep the key private: it reveals your place.
 | `sensor.<place>_threat` | The most severe threat: `none`, `massive`, `ballistic`, `cruise`, `mig`, `kab`, `aircraft`, `drone`; all of them in `list` and as true/false attributes |
 | `sensor.<place>_alert_started`, `sensor.<place>_last_all_clear` | When the alert began, when the last all-clear was |
 | `binary_sensor.<place>_drone_nearby`, `sensor.<place>_drone_distance` | A drone within the radius of home and its distance, km |
+| `sensor.<place>_power`, `binary_sensor.<place>_power_schedule` | Scheduled power: `on` / `off` / `maybe` / `unknown`; attributes `group`, `intervals` (outages ahead), `known_until` (how far the schedule is known) |
 | `sensor.<place>_targets_over_the_oblast` | Targets tracked over the oblast (attributes: approaching, leaving, shot down) |
 
 Without fresh data from the server, entities become `unavailable`, never "all clear".

@@ -1,3 +1,14 @@
+## v0.2.0
+
+Картка для панелі / Dashboard card.
+
+- Картка «Тривога в нотчі»: рівень кольором, скільки триває, загрози силуетами, «Дрон поруч · місце · км», цілі
+  над областю, смуга світла на добу з відліком. Компактна для телефона, широка для планшета на стіні, темна й
+  світла тема, редактор у панелі без YAML. Приходить разом з інтеграцією, окремо ставити не треба.
+- Світло: атрибути `intervals` і `known_until`, графік наперед для шаблонів і автоматизацій.
+- The NotchAlert card ships with the integration: level, duration, threats, drone nearby, power strip; compact
+  and wide, dark and light, UI editor. Power gets `intervals` and `known_until` attributes.
+
 ## v0.1.0
 
 Перший випуск / First release.

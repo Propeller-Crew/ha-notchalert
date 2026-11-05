@@ -129,7 +129,13 @@ class PowerStateSensor(NotchAlertEntity, SensorEntity):
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
-        return {"group": self.part.get("group"), "slots": self.place.get("slots") or []}
+        # intervals і known_until — для картки панелі (смуга світла на добу) і для шаблонів: відключення й
+        # «можливо» наперед; далі known_until графіка ще нема, і там не «світло є», а невідомо.
+        intervals = [{"start": when(a).isoformat(), "end": when(b).isoformat(), "state": k}
+                     for a, b, k in self.part.get("intervals") or [] if when(a) and when(b)]
+        known = when(self.part.get("known_until"))
+        return {"group": self.part.get("group"), "slots": self.place.get("slots") or [], "intervals": intervals,
+                "known_until": known.isoformat() if known else None}
 
 
 class PowerChangeSensor(NotchAlertEntity, SensorEntity):

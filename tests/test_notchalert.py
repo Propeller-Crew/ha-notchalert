@@ -26,7 +26,7 @@ QUIET_PLACE = {
     "sky": {"fresh": True, "targets": 0, "approach": 0, "away": 0, "shot_down": 0, "weapons": [], "quiet_min": 40, "window_min": 60},
     "events": [], "quiet_since": NOW - 3600,
     "power": {"fresh": True, "group": "3.1", "state": "on", "until": NOW + 7200, "next": "off",
-              "intervals": [[NOW + 7200, NOW + 14400, "off"], [NOW + 30000, NOW + 33600, "maybe"]]},
+              "intervals": [[NOW + 7200, NOW + 14400, "off"], [NOW + 30000, NOW + 33600, "maybe"]], "known_until": NOW + 50000},
     "slots": ["14:00-16:00"], "lines": [],
 }
 
@@ -226,3 +226,30 @@ async def test_old_server_without_wait_stays_on_polling(hass: HomeAssistant, aio
     await hass.async_block_till_done()
     assert entry.runtime_data.client.waits is False
     assert entry.runtime_data.live_at == 0.0
+
+
+async def test_power_intervals_for_the_card(hass: HomeAssistant, aioclient_mock):
+    # Картка малює смугу світла на добу з цих атрибутів: відключення наперед і до коли графік відомий.
+    await setup(hass, aioclient_mock)
+    a = hass.states.get("sensor.irpin_power").attributes
+    iso = lambda t: dt_util.utc_from_timestamp(t).isoformat()
+    assert a["intervals"] == [{"start": iso(NOW + 7200), "end": iso(NOW + 14400), "state": "off"},
+                              {"start": iso(NOW + 30000), "end": iso(NOW + 33600), "state": "maybe"}]
+    assert a["known_until"] == iso(NOW + 50000)
+
+
+async def test_card_served_and_added_to_frontend(hass: HomeAssistant, aioclient_mock, hass_client):
+    # Картку не треба ставити окремо: інтеграція віддає файл і додає його в кожну сторінку фронтенду.
+    from homeassistant.components.frontend import DATA_EXTRA_MODULE_URL
+    from homeassistant.setup import async_setup_component
+
+    from custom_components.notchalert.card import CARD_PATH, card_url
+
+    assert await async_setup_component(hass, "http", {})
+    hass.data.setdefault(DATA_EXTRA_MODULE_URL, set())  # frontend без збірки фронтенду в тестах
+    await setup(hass, aioclient_mock)
+    assert card_url() in hass.data[DATA_EXTRA_MODULE_URL]
+    assert "?v=" in card_url()
+    resp = await (await hass_client()).get(CARD_PATH)
+    assert resp.status == 200
+    assert "notchalert-card" in await resp.text()
