@@ -20,8 +20,6 @@ jobs:
       - uses: hacs/action@main
         with:
           category: integration
-          # Іконка лежить у custom_components/notchalert/brand/ (HA 2026.3+), не в home-assistant/brands.
-          ignore: brands
 
   tests:
     runs-on: ubuntu-latest
